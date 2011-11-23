@@ -49,7 +49,7 @@ regionToArray (_, _, _, _, rows) = concat(map fromPixel (concat (rows)))
 
 -- schreibt Header mit genügend Pufferkommentaren für spätere Größenänderung, festes Byteoffset für einfügen von Regionen
 -- Kommentare nur direkt vor dem Bytestream
--- durch Benutzung von WriteMode wird alter Inhalt gelöscht
+-- durch Benutzung von ReadWriteMode kann auch der Header zum Schluss geschrieben werden
 writePNMHeader :: String -> Screen -> IO ()
 writePNMHeader fn (width, height) = do
                                     h <- openFile fn WriteMode
@@ -62,7 +62,7 @@ writePNMHeader fn (width, height) = do
 
 -- macht Seek zur richtigen Position und schreibt Binärdaten
 -- bevor Bild fertig ist, muss überall hingeschrieben worden sein
--- ansonsten könnte auch hier zum Ende geseekt werden.
+-- ansonsten könnte auch hier zum Ende geseekt werden. Oder man macht immer letztes Rechteck als erstes, sodass ein Preview möglich ist.
 writeRegionToFile :: String -> Region -> IO ()
 writeRegionToFile fn r = do
                          h <- openFile fn ReadWriteMode
