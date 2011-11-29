@@ -8,10 +8,10 @@ def_pix = (140,40,140)
 main = uglyrender
 
 uglyrender = do
-             let w = 100
-             let h = 60
+             let w = 3
+             let h = 4
              let screen = (w, h)
-             let regions = splitUp 2 1 screen
+             let regions = splitUp 3 4 screen
              --PNM.besuretodelete "out.pnm"
              PNM.writePNMHeader "out.pnm" screen
              render regions
@@ -34,4 +34,8 @@ splitUp n m (w, h) = [( (px, py), (w,h), xsize, ysize, [[]] ) | py<-[0,ysize .. 
 trace :: PNM.Region -> PNM.Region
 trace (posi, screen, w, h, _) = (posi, screen, w, h, rows)
                               where
-                              rows = replicate h (replicate w def_pix)
+                              rows = colored h
+                              colored 0 = []
+                              colored n = (replicate w (testfarbe (50+120*((fst posi)+(snd posi))))):(colored (n-1))
+testfarbe :: Int -> PNM.RGB
+testfarbe c = (fromIntegral(mod c 255), fromIntegral(mod c 255), fromIntegral(mod c 255))
