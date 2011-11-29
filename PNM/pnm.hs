@@ -1,3 +1,26 @@
+module PNM (RGB,
+            Row,
+            Width,
+            Height,
+            Posi,
+            Screen,
+            Region,
+            toPixel,
+            fromPixel,
+            toIntPixel,
+            fromIntPixel,
+            getWidth,
+            getHeight,
+            getScreen,
+            getScreenHeight,
+            getScreenWidth,
+            getPosX,
+            getPosY,
+            writePNMHeader,
+            writeRegionToFile,
+            saveAsPNG
+           ) where
+
 import System.IO
 import Data.Word
 import qualified Data.ByteString as B
@@ -17,8 +40,12 @@ type Region = (Posi, Screen, Width, Height, [Row])
 bINARYoFFSET :: Int
 bINARYoFFSET = 100
 
+toIntPixel :: [Int] -> RGB
+toIntPixel [r, g, b] = (fromIntegral r, fromIntegral g, fromIntegral b)
 toPixel :: [Word8] -> RGB
 toPixel [r, g, b] = (r, g, b)
+fromIntPixel :: RGB -> [Int]
+fromIntPixel (r, g, b) = [fromIntegral r, fromIntegral g, fromIntegral b]
 fromPixel :: RGB -> [Word8]
 fromPixel (r, g, b) = [r, g, b]
 
@@ -52,7 +79,7 @@ regionToArray (_, _, _, _, rows) = concat(map fromPixel (concat (rows)))
 -- durch Benutzung von ReadWriteMode kann auch der Header zum Schluss geschrieben werden
 writePNMHeader :: String -> Screen -> IO ()
 writePNMHeader fn (width, height) = do
-                                    h <- openFile fn WriteMode
+                                    h <- openFile fn ReadWriteMode
                                     let header = longheader("P6\n" ++ (show width) ++ " " ++ (show height) ++ "\n" ++ "# puffer comment\n") ++ "\n255\n"
                                     hPutStr h header
                                     hClose h
