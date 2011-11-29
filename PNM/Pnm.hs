@@ -1,4 +1,4 @@
-module PNM (RGB,
+module Pnm (RGB,
             Row,
             Width,
             Height,
@@ -124,21 +124,21 @@ farbigeTestRegion s p w h c = (p, s, w, h, replicate h (replicate w c))
 testsequenz = do
  -- Erstellen von vier.png:
  writePNMHeader "vier.pnm" (100,100)
- 
+
  let b1 = farbigeTestRegion (100,100) (0,0) 50 50 (0,40,40)
  writeRegionToFile "vier.pnm" b1
- 
+
  let b2 = farbigeTestRegion (100,100) (50,0) 50 50 (255,255,40)
  writeRegionToFile "vier.pnm" b2
- 
+
  let b3 = farbigeTestRegion (100,100) (0,50) 50 50 (0,255,40)
  writeRegionToFile "vier.pnm" b3
- 
+
  let b4 = farbigeTestRegion (100,100) (50,50) 50 50 (0,255,240)
  writeRegionToFile "vier.pnm" b4
- 
+
  saveAsPNG "vier.pnm"
- 
+
  -- auch möglich:
  let b = farbigesTestBild 100 100 (95,55,55)
  writePNMHeader "graudannbunt.pnm" (getScreen b)
