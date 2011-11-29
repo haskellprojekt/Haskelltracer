@@ -1,4 +1,4 @@
-module Pnm (RGB,
+module PNM.Pnm (RGB,
             Row,
             Width,
             Height,
@@ -18,10 +18,13 @@ module Pnm (RGB,
             getPosY,
             writePNMHeader,
             writeRegionToFile,
-            saveAsPNG
+            saveAsPNG,
+            --besuretodelete
            ) where
 
 import System.IO
+import IO
+import Directory
 import Data.Word
 import qualified Data.ByteString as B
 import System.Process
@@ -76,10 +79,10 @@ regionToArray (_, _, _, _, rows) = concat(map fromPixel (concat (rows)))
 
 -- schreibt Header mit genügend Pufferkommentaren für spätere Größenänderung, festes Byteoffset für einfügen von Regionen
 -- Kommentare nur direkt vor dem Bytestream
--- durch Benutzung von ReadWriteMode kann auch der Header zum Schluss geschrieben werden
+-- @TODO: durch Benutzung von ReadWriteMode kann auch der Header zum Schluss geschrieben werden
 writePNMHeader :: String -> Screen -> IO ()
 writePNMHeader fn (width, height) = do
-                                    h <- openFile fn ReadWriteMode
+                                    h <- openFile fn WriteMode
                                     let header = longheader("P6\n" ++ (show width) ++ " " ++ (show height) ++ "\n" ++ "# puffer comment\n") ++ "\n255\n"
                                     hPutStr h header
                                     hClose h
@@ -113,8 +116,9 @@ saveAsPNG :: String -> IO ProcessHandle
 saveAsPNG s = do
               runCommand ("pnmtopng \"" ++ s ++ "\" > \"`dirname \"" ++ s ++ "\"`/`basename \"" ++ s ++ "\" .pnm`.png\"")
 
-
-
+--besuretodelete s = do
+--                   let x = doesFileExist s
+--                   if x then (removeFile s)
 
 farbigesTestBild :: Width -> Height -> RGB -> Region
 farbigesTestBild w h c = ((0,0), (w,h), w, h, replicate h (replicate w c))
