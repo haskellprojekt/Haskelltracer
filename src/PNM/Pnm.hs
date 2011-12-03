@@ -18,13 +18,12 @@ module PNM.Pnm (RGB,
             getPosY,
             writePNMHeader,
             writeRegionToFile,
-            saveAsPNG,
-            --besuretodelete
+            saveAsPNG
            ) where
 
 import System.IO
-import IO
-import Directory
+--import IO
+--import Directory
 import Data.Word
 import qualified Data.ByteString as B
 import System.Process
