@@ -1,4 +1,10 @@
 import PNM.Pnm as PNM
+import Control.Parallel
+import Control.Parallel.Strategies
+import Control.DeepSeq
+
+-- zum optimieren lokale definitionen rausmachen
+
 
 type Punkt = (Double, Double, Double)
 data Vektor = V Punkt
@@ -89,21 +95,24 @@ def_pix = (140,40,140)
 main = uglyrender
 
 uglyrender = do
-             let w = 400
-             let h = 300
+             let w = 800
+             let h = 600
              let screen = (w, h)
              let regions = splitUp 4 4 screen
              PNM.writePNMHeader "out.pnm" screen
-             render regions
+             let rendered = render regions
+             writeAll rendered "out.pnm"
              PNM.saveAsPNG "out.pnm"
              putStrLn "Fertig"
 
-render :: [PNM.Region] -> IO Bool
-render [] = return True
-render (r:rs) = do
-                let pic = trace r
-                PNM.writeRegionToFile "out.pnm" pic
-                (render rs)
+writeAll :: [PNM.Region] -> String -> IO ()
+writeAll (r:rs) fname = do
+                        PNM.writeRegionToFile fname r
+                        if rs == [] then return () else  writeAll rs fname
+
+render :: [PNM.Region] -> [PNM.Region]
+render regions = (parMap rdeepseq) trace regions
+-- alternativen: rdeepseq rseq rpar (alt rwhnf)
 
 splitUp :: Int -> Int -> PNM.Screen -> [PNM.Region]
 splitUp n m (w, h) = [( (px, py), (w,h), xsize, ysize, [[]] ) | py<-[0,ysize .. h], px<-[0,xsize .. w] ]
