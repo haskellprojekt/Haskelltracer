@@ -5,6 +5,9 @@ import Control.DeepSeq
 
 -- zum optimieren lokale definitionen rausmachen
 
+-- @TODO: split 2 2 heißt insg 4 regionen parallel!
+--        also am besten RTS auslesen? daraus die split-parameter bestimmen?
+-- @TODO: werden die regionen alle richtig zusammengesetzt?
 
 type Punkt = (Double, Double, Double)
 data Vektor = V Punkt
@@ -98,7 +101,8 @@ uglyrender = do
              let w = 800
              let h = 600
              let screen = (w, h)
-             let regions = splitUp 4 4 screen
+             let regions = splitUp 2 1 screen
+             putStrLn ((show (length regions)) ++ " Regionen")
              PNM.writePNMHeader "out.pnm" screen
              let rendered = render regions
              writeAll rendered "out.pnm"
@@ -115,7 +119,7 @@ render regions = (parMap rdeepseq) trace regions
 -- alternativen: rdeepseq rseq rpar (alt rwhnf)
 
 splitUp :: Int -> Int -> PNM.Screen -> [PNM.Region]
-splitUp n m (w, h) = [( (px, py), (w,h), xsize, ysize, [[]] ) | py<-[0,ysize .. h], px<-[0,xsize .. w] ]
+splitUp n m (w, h) = [( (px, py), (w,h), xsize, ysize, [[]] ) | py<-[0,ysize .. h], px<-[0,xsize .. w], px /= w, py /= h ]
     where
     ysize = floor ((fromIntegral h)/(fromIntegral m))
     xsize = floor ((fromIntegral w)/(fromIntegral n))
