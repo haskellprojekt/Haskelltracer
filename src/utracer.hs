@@ -4,11 +4,9 @@ import Control.Parallel.Strategies
 import Control.DeepSeq
 import GHC.Conc (numCapabilities)
 
--- zum optimieren lokale definitionen rausmachen
-
--- @TODO: split 2 2 heißt insg 4 regionen parallel!
---        also am besten RTS auslesen? daraus die split-parameter bestimmen?
--- @TODO: werden die regionen alle richtig zusammengesetzt?
+-- @TODO: * zum optimieren lokale definitionen rausmachen
+-- * doch Float?
+-- * alles andere als Dreiecke, Liste von Welt usw.
 
 type Punkt = (Double, Double, Double)
 data Vektor = V Punkt
