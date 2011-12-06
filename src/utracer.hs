@@ -114,7 +114,7 @@ uglyrender = do
 getRegionsForThreads :: (Int, Int)
 getRegionsForThreads = (kleinster, div numcore kleinster)
                        where
-                       kleinster = getkleinererTeiler (floor ((fromIntegral numcore)/2))
+                       kleinster = getkleinererTeiler (floor (((fromIntegral numcore)+1)/2))
                        numcore = numCapabilities
                        getkleinererTeiler x = if mod numcore x == 0 then x else getkleinererTeiler (x-1)
 
