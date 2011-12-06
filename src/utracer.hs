@@ -2,6 +2,7 @@ import PNM.Pnm as PNM
 import Control.Parallel
 import Control.Parallel.Strategies
 import Control.DeepSeq
+import GHC.Conc (numCapabilities)
 
 -- zum optimieren lokale definitionen rausmachen
 
@@ -101,13 +102,21 @@ uglyrender = do
              let w = 800
              let h = 600
              let screen = (w, h)
-             let regions = splitUp 2 1 screen
-             putStrLn ((show (length regions)) ++ " Regionen")
+             let (smp1, smp2) = getRegionsForThreads
+             let regions = splitUp smp1 smp2 screen
+             putStrLn ((show (length regions)) ++ " Regionen: " ++ (show smp1) ++ "*" ++ (show smp2))
              PNM.writePNMHeader "out.pnm" screen
              let rendered = render regions
              writeAll rendered "out.pnm"
              PNM.saveAsPNG "out.pnm"
              putStrLn "Fertig"
+
+getRegionsForThreads :: (Int, Int)
+getRegionsForThreads = (kleinster, div numcore kleinster)
+                       where
+                       kleinster = getkleinererTeiler (floor ((fromIntegral numcore)/2))
+                       numcore = numCapabilities
+                       getkleinererTeiler x = if mod numcore x == 0 then x else getkleinererTeiler (x-1)
 
 writeAll :: [PNM.Region] -> String -> IO ()
 writeAll (r:rs) fname = do
