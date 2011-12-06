@@ -1,3 +1,5 @@
+*.pnm
+*.png
 *.hi
 *.o
 utracer
