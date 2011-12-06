@@ -1,7 +1,7 @@
 Name: haskelltracer
 Version: 0.0
 Synopsis: a ray tracer written in haskell
-Build-Depends: base, parsec
+Build-Depends: base, parsec, deepseq, parallel
 Build-Type: Simple
 
 Executable: haskelltracer
