@@ -38,7 +38,11 @@ instance Vek Vektor where
 data  Objekt = Dreieck Vektor Vektor Vektor
                | Gerade Vektor Vektor
 
-testeck = Dreieck (V (2,3,1)) (V (5,7,5)) (V (4,5,9))
+testeck1 = Dreieck (V (2,3,1)) (V (5,7,5)) (V (4,5,9))
+testeck2 = Dreieck (V (12,3,24)) (V (8,1,7)) (V (13,13,13))
+blue = (0,73,244)
+yellow = (200,255,0)
+world = [(testeck1, blue), (testeck2, yellow)]
 campoint = V (0,1,1) -- standort der kamera
 blickzu = V (4,5,6) -- kann in Ferne liegen
 richtung = (einheitsvektor (blickzu `vminus` campoint)) `vmult` 5
@@ -142,9 +146,12 @@ trace (posi, screen, w, h, _) = (posi, screen, w, h, rows)
                                  | s == w = (getPixelOn ((fst posi) + w-1) ((snd posi) + y-1) (fst screen) (snd screen)):[]
                                  | otherwise = (getPixelOn ((fst posi) + s-1) ((snd posi) + y-1) (fst screen) (snd screen)):(makeRow (s+1) y)
 
+-- @TODO: schaue nach kl. dist
 getPixelOn :: Int -> Int -> Int -> Int -> PNM.RGB
-getPixelOn a b sw sh = dreitreffen
+getPixelOn a b sw sh = treffen world
   where
-    dreitreffen = if hasSchnittpunkt testeck (Gerade ((getLeinPunkt x y) `vplus` (getLeinVekt x y)) (getLeinVekt x y)) then (200,255,0) else def_pix
+    treffen [] = def_pix
+    treffen ((Dreieck v1 v2 v3, col):wl) = if dreitreffen (Dreieck v1 v2 v3) then col else treffen wl
+    dreitreffen dr = hasSchnittpunkt dr (Gerade ((getLeinPunkt x y) `vplus` (getLeinVekt x y)) (getLeinVekt x y))
     x = (fromIntegral a)/(fromIntegral sw)
     y = (fromIntegral b)/(fromIntegral sh)
