@@ -40,9 +40,14 @@ data  Objekt = Dreieck Vektor Vektor Vektor
 
 testeck1 = Dreieck (V (2,3,1)) (V (5,7,5)) (V (4,5,9))
 testeck2 = Dreieck (V (12,3,24)) (V (8,1,7)) (V (13,13,13))
+lz = Dreieck (V (0,0,0)) (V (0,0,50)) (V (1,1,50))
+ly = Dreieck (V (0,0,0)) (V (0,50,0)) (V (1,50,1))
+lx = Dreieck (V (0,0,0)) (V (50,0,0)) (V (50,1,1))
+green = (0,255,0)
+red = (255,0,0)
 blue = (0,73,244)
 yellow = (200,255,0)
-world = [(testeck1, blue), (testeck2, yellow)]
+world = [(testeck1, blue), (testeck2, yellow), (lx, red), (ly, green), (lz,blue)]
 campoint = V (0,1,1) -- standort der kamera
 blickzu = V (4,5,6) -- kann in Ferne liegen
 richtung = (einheitsvektor (blickzu `vminus` campoint)) `vmult` 5
