@@ -5,20 +5,20 @@ import Control.DeepSeq
 import GHC.Conc (numCapabilities)
 
 -- @TODO: * zum optimieren lokale definitionen rausmachen
--- * doch Float?
+-- * distanz
 -- * alles andere als Dreiecke, Liste von Welt usw.
 
-type Punkt = (Double, Double, Double)
+type Punkt = (Float, Float, Float)
 data Vektor = V Punkt
               deriving (Show)
 
 class Vek v where
-  vdiv :: v -> Double -> v
-  vmult :: v -> Double -> v
-  vsprod :: v -> v -> Double
+  vdiv :: v -> Float -> v
+  vmult :: v -> Float -> v
+  vsprod :: v -> v -> Float
   vxv :: v -> v -> v
-  len :: v -> Double
-  winkel :: v -> v -> Double
+  len :: v -> Float
+  winkel :: v -> v -> Float
   einheitsvektor :: v -> v
   vplus :: v -> v -> v
   vminus :: v -> v -> v
@@ -40,9 +40,9 @@ data  Objekt = Dreieck Vektor Vektor Vektor
 
 testeck1 = Dreieck (V (2,3,1)) (V (5,7,5)) (V (4,5,9))
 testeck2 = Dreieck (V (12,3,24)) (V (8,1,7)) (V (13,13,13))
-lz = Dreieck (V (0,0,0)) (V (0,0,50)) (V (1,1,50))
-ly = Dreieck (V (0,0,0)) (V (0,50,0)) (V (1,50,1))
-lx = Dreieck (V (0,0,0)) (V (50,0,0)) (V (50,1,1))
+lz = Dreieck (V (0,0,0)) (V (0,0,50)) (V (9,9,50))
+ly = Dreieck (V (0,0,0)) (V (0,50,0)) (V (9,50,9))
+lx = Dreieck (V (0,0,0)) (V (50,0,0)) (V (50,9,9))
 green = (0,255,0)
 red = (255,0,0)
 blue = (0,73,244)
@@ -54,7 +54,7 @@ richtung = (einheitsvektor (blickzu `vminus` campoint)) `vmult` 5
 leinwagex = V (0, -8, 0)   -- müsste gedreht werden: ist aber von der länge fix -- -5
 leinwagey = V (0, 0, 6)  -- müsste gedreht werden: von länge fix -- 3.5
 
-getLeinPunkt :: Double -> Double -> Vektor
+getLeinPunkt :: Float -> Float -> Vektor
 getLeinPunkt w h = (startp `vplus` (lx `vmult` (lw*w))) `vplus` (ly `vmult` (lh*h))
                    where
                    startp = mittelp `vminus` ((leinwagex `vplus` leinwagey) `vdiv` 2)
@@ -64,7 +64,7 @@ getLeinPunkt w h = (startp `vplus` (lx `vmult` (lw*w))) `vplus` (ly `vmult` (lh*
                    lw = len leinwagex
                    lh = len leinwagey
 
-getLeinVekt :: Double -> Double -> Vektor
+getLeinVekt :: Float -> Float -> Vektor
 getLeinVekt w h = campoint `vminus` (getLeinPunkt w h)
 
 -- x>0 heißt nur "nach vorne" strahlen
@@ -77,7 +77,7 @@ hasSchnittpunkt (Dreieck a b c) (Gerade st richt) = if u < 0 || v < 0 || (u+v) >
 
 -- t: stützvektor; r: richtungsvektor der Geraden. a, b, c: Stützvektoren der Ecken des Dreiecks.
 -- zu lösende Gleichung: t + x*r = a + u*(b-a) + v*(c-a)
-getLoesungUV :: (Vektor, Vektor) -> (Vektor, Vektor, Vektor) -> (Double, Double, Double)
+getLoesungUV :: (Vektor, Vektor) -> (Vektor, Vektor, Vektor) -> (Float, Float, Float)
 getLoesungUV (t, r) (a, b, c) = (x, u, v)
   where
     x = ((schritt6 !! 0) !! 3)/((schritt6 !! 0) !! 0)
