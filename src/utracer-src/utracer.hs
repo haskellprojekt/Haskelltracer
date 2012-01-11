@@ -50,9 +50,10 @@ yellow = (200,255,0)
 world = [(testeck1, blue), (testeck2, yellow), (lx, red), (ly, green), (lz,blue)]
 campoint = V (0,1,1) -- standort der kamera
 blickzu = V (4,5,6) -- kann in Ferne liegen
+
 richtung = (einheitsvektor (blickzu `vminus` campoint)) `vmult` 5
-leinwagex = V (0, -8, 0)   -- müsste gedreht werden: ist aber von der länge fix -- -5
-leinwagey = V (0, 0, 6)  -- müsste gedreht werden: von länge fix -- 3.5
+leinwagex = V (0, 0, 8)   -- müsste gedreht werden: ist aber von der länge fix -- -5
+leinwagey = V (0, 6, 0)  -- müsste gedreht werden: von länge fix -- 3.5
 
 getLeinPunkt :: Float -> Float -> Vektor
 getLeinPunkt w h = (startp `vplus` (lx `vmult` (lw*w))) `vplus` (ly `vmult` (lh*h))

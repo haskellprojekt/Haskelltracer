@@ -5,4 +5,4 @@ Build-Depends: base, parsec, deepseq, parallel
 Build-Type: Simple
 
 Executable: haskelltracer
-Main-is: src/haskelltracer.hs
+Main-is: src/Main.hs

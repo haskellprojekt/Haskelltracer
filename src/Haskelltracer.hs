@@ -1,6 +1,5 @@
+module Haskelltracer where
 import Data.Word
-
-main = putStrLn "Hello World!"
 
 type Width = Int
 type Height = Int
@@ -16,15 +15,11 @@ data Camera = Camera { point :: Vector
 ,   camSky :: Vector
 }
 
-data Scene = Scene { camera :: Camera
-,   sGeometry :: [Geometry g => g]
-}
-
 type Intersection = Vector
 type Distance = Float
 type Vector = (Float, Float, Float)
 
-data Ray = R Vector Vector
+data Ray = Ray Vector Vector
 
 class Geometry g where
     -- color of nearest intersect (and distance)
@@ -41,3 +36,4 @@ data Tile = Tile {   position :: ( Int, Int)
 ,   tPixels :: [Color]
 }
 
+green = (0 :: Word8, 255 :: Word8, 0 :: Word8)
