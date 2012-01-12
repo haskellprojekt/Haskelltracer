@@ -5,6 +5,6 @@ version:            0.0
 synopsis:           a ray tracer written in haskell
 
 executable haskelltracer
-    build-depends:      base--, parsec, deepseq, parallel
+    build-depends:      base
     hs-source-dirs:     src
     main-is:            Main.hs
