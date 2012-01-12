@@ -4,6 +4,8 @@
 *.swp
 *.png
 *.pnm
+*.ppm
 *.o
 *.hi
 utracer
+haskelltracer

@@ -1,8 +1,10 @@
-Name: haskelltracer
-Version: 0.0
-Synopsis: a ray tracer written in haskell
-Build-Depends: base, parsec, deepseq, parallel
-Build-Type: Simple
+cabal-version:      >= 1.6
+build-type:         Simple
+name:               haskelltracer
+version:            0.0
+synopsis:           a ray tracer written in haskell
 
-Executable: haskelltracer
-Main-is: src/haskelltracer.hs
+executable haskelltracer
+    build-depends:      base--, parsec, deepseq, parallel
+    hs-source-dirs:     src
+    main-is:            Main.hs
