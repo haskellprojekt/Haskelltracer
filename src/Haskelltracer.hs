@@ -1,16 +1,17 @@
 module Haskelltracer where
 import Data.Word
 
+type Byte = Word8
 type Width = Int
 type Height = Int
 
-data Config = Config { outFile :: String
+data Config = Config { cOutFile :: String
 ,   cInFile :: String
 ,   cScreen :: (Width, Height)
 ,   cTiles  :: [Tile]
 }
 
-data Camera = Camera { point :: Vector
+data Camera = Camera { camPoint :: Vector
 ,   camLookAt :: Vector
 ,   camSky :: Vector
 }
@@ -30,10 +31,39 @@ class Geometry g where
 -- as instances we want to define: sphere, triangle, plane
 
 type Color = (Word8,Word8,Word8)
-data Tile = Tile {   position :: ( Int, Int)
+data Tile = Tile {   tPosition :: ( Int, Int)
 ,   tScreen :: (Width, Height)
 ,   tSize :: (Width, Height)
-,   tPixels :: [Color]
-}
+,   tPixels :: [[Color]]
+} deriving Show
+
+
+getTileWidth :: Tile -> Width
+getTileWidth t = fst (tSize t)
+getTileHeight :: Tile -> Height
+getTileHeight t = snd (tSize t)
+
+getScreenWidth :: Tile -> Width
+getScreenWidth t = fst (tScreen t)
+getScreenHeight :: Tile -> Height
+getScreenHeight t = snd (tScreen t)
+getScreen :: Tile -> (Width, Height)
+getScreen t = tScreen t
+
+getTilePosX :: Tile -> Int
+getTilePosX t = fst (tPosition t)
+getTilePosY :: Tile -> Int
+getTilePosY t = snd (tPosition t)
+
+
+fromInt2Color :: [Int] -> Color
+fromInt2Color [r, g, b] = (fromIntegral r, fromIntegral g, fromIntegral b)
+from3List2Color :: [Word8] -> Color
+from3List2Color [r, g, b] = (r, g, b)
+fromColor2Int :: Color -> [Int]
+fromColor2Int (r, g, b) = [fromIntegral r, fromIntegral g, fromIntegral b]
+fromColor23List :: Color -> [Word8]
+fromColor23List (r, g, b) = [r, g, b]
+
 
 green = (0 :: Word8, 255 :: Word8, 0 :: Word8)
