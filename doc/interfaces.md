@@ -34,7 +34,7 @@ data Tile = Tile
 {   position :: ( Int, Int)
 ,   screen :: (Width, Height)
 ,   size :: (Width, Height)
-,   pixels :: [Color]
+,   pixels :: [[Color]] -- each list is a row
 }
 
 -- FileWriter :: [Tile] -> config -> IO ()

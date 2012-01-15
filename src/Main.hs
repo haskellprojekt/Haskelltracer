@@ -3,6 +3,7 @@ import Haskelltracer
 import Plane
 import Triangle
 import Pnm
+import Math
 
 data Geometries = T Triangle | P Plane deriving Show
 -- hardcoded because even with some extended tricks a mixed list is not possible?

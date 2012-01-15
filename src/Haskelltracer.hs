@@ -18,7 +18,7 @@ data Camera = Camera { camPoint :: Vector
 
 type Intersection = Vector
 type Distance = Float
-type Vector = (Float, Float, Float)
+data Vector = Vector Float Float Float deriving (Show, Eq)
 
 data Ray = Ray Vector Vector
 
