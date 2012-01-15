@@ -4,13 +4,13 @@ import Data.List (minimumBy)
 import Data.Maybe (fromMaybe, mapMaybe)
 import Data.Function (on)
 
-import Color (RGB(..))
+import Color (RGB)
 import Vector (distance2)
 import Ray (Ray(..))
 import Shape (withRay, AnyShape)
 import Camera (Camera, rays)
 
-data Scene = Scene Camera [(AnyShape, RGB)] RGB
+data Scene = Scene { camera :: Camera, shapes :: [(AnyShape, RGB)], bgColor :: RGB }
 
 trace :: Scene -> Integer -> Integer -> [RGB]
 trace (Scene camera shapes bgColor) xPoints yPoints = map (fromMaybe bgColor) [traceSingle ray shapes | ray <- rays camera xPoints yPoints]
