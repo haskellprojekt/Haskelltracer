@@ -46,7 +46,8 @@ data Tile = Tile {   tPosition :: ( Int, Int)
   --rnf (y:xy) = rnf y `seq` rnf xy
 instance NFData Tile where
   --rnf = rwhnf
-  rnf x = par x ()
+  rnf x = seq x ()
+  --rnf x = par x ()
   --rnf x = seq x ()
 
 getTileWidth :: Tile -> Width
@@ -79,3 +80,5 @@ fromColor23List (r, g, b) = [r, g, b]
 
 green = (0 :: Word8, 255 :: Word8, 0 :: Word8)
 grey = (110 :: Word8, 110 :: Word8, 110 :: Word8)
+yellow = (0 :: Word8, 255 :: Word8, 255 :: Word8)
+

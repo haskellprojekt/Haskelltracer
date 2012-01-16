@@ -14,7 +14,9 @@ data Geometries = T Triangle | P Plane deriving Show
 -- hardcoded because even with some extended tricks a mixed list is not possible?
 
 instance Geometry Geometries where
+  coloredIntersect (P plane) ray = coloredIntersect plane ray
   coloredIntersect (T triangle) ray = coloredIntersect triangle ray
+
 
 data Scene = Scene { camera :: Camera
 ,   sGeometries :: [Geometries]

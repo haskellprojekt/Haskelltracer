@@ -11,8 +11,9 @@ main = do
        let screen1 = (800,600)
        let conf1 = Config "test.pnm" "test.pov" screen1 (tilesForThreads screen1)
        let cam1 = Camera (Vector 0 1 1) (Vector 4 5 6) (Vector 0 1 0)
-       let geom1 = T (Triangle (Vector 2 3 1) (Vector 5 7 5) (Vector 4 5 9) green)
-       let testscene = Scene cam1 [geom1]
+       let geom1 = T (Triangle (Vector 2 2.2 1) (Vector 5 3.5 5) (Vector 4 3 9) green)
+       let geom2 = P (Plane (Vector 7 2 8) (Vector 5 1.5 7) (Vector 5 3.5 6) yellow)
+       let testscene = Scene cam1 (geom2:[geom1])
        putStrLn $ "Starting render process with " ++ (show (length (cTiles conf1))) ++ " Regions"
        let results = render testscene conf1
        writePNMHeader (cOutFile conf1) (cScreen conf1)
