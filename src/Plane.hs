@@ -16,5 +16,5 @@ planeIntersection :: Ray -> Plane -> (Bool, Distance)
 planeIntersection (Ray s r) (Plane a b c _) = (intersect, dist)
   where
     dist = x*(vlen r)
-    intersect = if u < 0 || v < 0 || (u+v) > 2 || x < 0 || u /= u || v /= v || x /= x then False else True
+    intersect = if u < 0 || v < 0 || u > 1 || v > 1 || x < 0 || u /= u || v /= v || x /= x then False else True
     (x, u, v) = getSolutionUV (s, r) (a, b, c)

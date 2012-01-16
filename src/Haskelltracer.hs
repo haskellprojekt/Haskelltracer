@@ -81,4 +81,5 @@ fromColor23List (r, g, b) = [r, g, b]
 green = (0 :: Word8, 255 :: Word8, 0 :: Word8)
 grey = (110 :: Word8, 110 :: Word8, 110 :: Word8)
 yellow = (0 :: Word8, 255 :: Word8, 255 :: Word8)
-
+red = (255 :: Word8, 0 :: Word8, 0 :: Word8)
+blue = (0 :: Word8, 0 :: Word8, 255 :: Word8)

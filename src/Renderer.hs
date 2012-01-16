@@ -7,15 +7,16 @@ import Haskelltracer
 import Math
 import Triangle
 import Plane
+import Sphere
 
 
-
-data Geometries = T Triangle | P Plane deriving Show
+data Geometries = T Triangle | P Plane | S Sphere deriving Show
 -- hardcoded because even with some extended tricks a mixed list is not possible?
 
 instance Geometry Geometries where
   coloredIntersect (P plane) ray = coloredIntersect plane ray
   coloredIntersect (T triangle) ray = coloredIntersect triangle ray
+  coloredIntersect (S sphere) ray = coloredIntersect sphere ray
 
 
 data Scene = Scene { camera :: Camera
@@ -41,10 +42,10 @@ trace (Scene cam geometries) (Tile (posx, posy) (scrwidth, scrheight) (width, he
 
 -- @TODO: take only smalest distance
 getPixelOn :: Camera -> Int -> Int -> Width -> Height -> [Geometries] -> Color
-getPixelOn cam a b sw sh geometries = treffen geometries
+getPixelOn cam a b sw sh geometries = treffen (-1) geometries grey
   where
-    treffen [] = grey
-    treffen (object:wl) = let (col,dist) = intersect object in if dist/=(0/0) && dist > 0 then col else treffen wl
+    treffen pd [] col = col
+    treffen pd (object:wl) acol = let (col,dist) = intersect object in if dist/=(0/0) && dist > 0 && (if pd < 0 then True else dist < pd) then treffen dist wl col else treffen pd wl acol
     intersect obj = coloredIntersect obj (Ray ((getLeinPunkt cam x y) + (getLeinVekt cam x y)) (getLeinVekt cam x y))
     x = (fromIntegral a)/(fromIntegral sw)
     y = (fromIntegral b)/(fromIntegral sh)
