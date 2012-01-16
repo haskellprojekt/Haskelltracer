@@ -1,4 +1,7 @@
 module Haskelltracer where
+import Control.Parallel
+import Control.Parallel.Strategies
+import Control.DeepSeq
 import Data.Word
 
 type Byte = Word8
@@ -37,6 +40,14 @@ data Tile = Tile {   tPosition :: ( Int, Int)
 ,   tPixels :: [[Color]]
 } deriving Show
 
+--instance NFData [Tile] where
+--  rnf = rdeepseq
+  --rnf [] = ()
+  --rnf (y:xy) = rnf y `seq` rnf xy
+instance NFData Tile where
+  --rnf = rwhnf
+  --rnf = rdeepseq
+  rnf x = seq x ()
 
 getTileWidth :: Tile -> Width
 getTileWidth t = fst (tSize t)
@@ -67,3 +78,4 @@ fromColor23List (r, g, b) = [r, g, b]
 
 
 green = (0 :: Word8, 255 :: Word8, 0 :: Word8)
+grey = (110 :: Word8, 110 :: Word8, 110 :: Word8)
