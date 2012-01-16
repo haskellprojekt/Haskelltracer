@@ -46,8 +46,8 @@ data Tile = Tile {   tPosition :: ( Int, Int)
   --rnf (y:xy) = rnf y `seq` rnf xy
 instance NFData Tile where
   --rnf = rwhnf
-  --rnf = rdeepseq
-  rnf x = seq x ()
+  rnf x = par x ()
+  --rnf x = seq x ()
 
 getTileWidth :: Tile -> Width
 getTileWidth t = fst (tSize t)

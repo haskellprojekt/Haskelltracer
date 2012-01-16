@@ -4,5 +4,6 @@ Synopsis: a ray tracer written in haskell
 Build-Depends: base, parsec, deepseq, parallel, process, bytestring
 Build-Type: Simple
 Executable: haskelltracer
+ghc-options: -rtsopts -threaded -O3
 Main-is: Main.hs
 hs-source-dirs: src
