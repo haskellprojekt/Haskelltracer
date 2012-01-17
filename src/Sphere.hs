@@ -12,8 +12,8 @@ instance Geometry Sphere where
 sphereIntersection :: Ray -> Sphere -> (Bool, Distance)
 sphereIntersection (Ray s r) (Sphere a d _) = (intersect, dist)
   where
-    d1 = (x1*(vlen r)) * (-1)
-    d2 = (x2*(vlen r)) * (-1)
+    d1 = (x1*(vlen r))
+    d2 = (x2*(vlen r))
     rz z = z /= (0/0) && z /= (4/0) && z > 0
     dist = if (rz d1) && (rz d2) then min d1 d2 else if (rz d1) then d1 else d2
     intersect = if dist /= (0/0) && dist /= (4/0) then True else False
@@ -23,4 +23,4 @@ sphereIntersection (Ray s r) (Sphere a d _) = (intersect, dist)
     (s1, s2, s3) = v s
     v (Vector a b c) = (a, b, c)
     abc a b c = (x (-), x (+))
-                where x f = (-b `f` sqrt(b^2 - 4*a*c) )/2/a
+                where x f = (b `f` sqrt(b^2 - 4*a*c) )/2/a
