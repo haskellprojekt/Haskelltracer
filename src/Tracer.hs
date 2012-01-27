@@ -13,7 +13,7 @@ import Camera (Camera, rays)
 data Scene = Scene { camera :: Camera, shapes :: [(AnyShape, RGB)], bgColor :: RGB }
 
 trace :: Scene -> Integer -> Integer -> [RGB]
-trace (Scene camera shapes bgColor) xPoints yPoints = map (fromMaybe bgColor) [traceSingle ray shapes | ray <- rays camera xPoints yPoints]
+trace (Scene camera shapes bgColor) targetWidth targetHeight = map (fromMaybe bgColor) [traceSingle ray shapes | ray <- rays camera targetWidth targetHeight]
 
 traceSingle :: Ray -> [(AnyShape, RGB)] -> Maybe RGB
 traceSingle ray shapes = result $ mapMaybe (rayHit ray) shapes

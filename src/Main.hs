@@ -1,7 +1,7 @@
 import qualified Data.ByteString as B
 
 import Color (RGB(..), black, white, red, blue, green)
-import Vector (Vector(..), yNormal)
+import Vector (Vector(..), yNormal, zNormal)
 import Shape (AnyShape(..))
 import Sphere (Sphere(..))
 import Plane (Plane(..), fromPoints)
@@ -16,11 +16,11 @@ writePPM file width height colors = do
 
 main = do
   let (w, h) = (400, 300)
-  let sphere1 = (AnyShape $ Sphere (Vector 0 2 5) 3, red)
-  let sphere2 = (AnyShape $ Sphere (Vector 3 0 5) 2.5, blue)
+  let sphere1 = (AnyShape $ Sphere (Vector 0 2 15) 3, red)
+  let sphere2 = (AnyShape $ Sphere (Vector 3 2 5) 2.5, blue)
   let plane = (AnyShape $ Plane yNormal (-1), green)
-  let triangle = (AnyShape $ Triangle (Vector (-1) 2 1) (Vector (-1) (-1) 1) (Vector 0 (-1) 1), white)
-  let camera = cameraLookAt (Vector 0 0 0) (Vector 0 0 5)
+  let triangle = (AnyShape $ Triangle (Vector (-1) 2 10) (Vector (-1) (-1) 1) (Vector 0 (-1) 1), white)
+  let camera = cameraLookAt (Vector 0 0 (-10)) zNormal
   let scene = Scene camera [sphere1, sphere2, plane, triangle] black
   let colors = trace scene w h
   writePPM "test.ppm" w h colors
