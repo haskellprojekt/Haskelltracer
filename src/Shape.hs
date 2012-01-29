@@ -6,9 +6,13 @@ import Vector (Vector)
 import Ray (Ray)
 
 class Shape a where
-  withRay :: a -> Ray -> [Vector]
+  intersections :: a -> Ray -> [Vector]
+  normal :: a -> Vector -> Vector
+  mapping :: a -> Vector -> (Float, Float)
 
 data AnyShape = forall a. Shape a => AnyShape a
 
 instance Shape AnyShape where
-  withRay (AnyShape a) = withRay a
+  intersections (AnyShape a) = intersections a
+  normal (AnyShape a) = normal a
+  mapping (AnyShape a) = mapping a

@@ -6,6 +6,7 @@ import Shape (AnyShape(..))
 import Sphere (Sphere(..))
 import Plane (Plane(..), fromPoints)
 import Triangle (Triangle(..))
+import Material(AnyMaterial(..), Diffuse(..))
 import Camera (cameraLookAt)
 import Tracer (Scene(..), trace)
 
@@ -16,10 +17,10 @@ writePPM file width height colors = do
 
 main = do
   let (w, h) = (400, 300)
-  let sphere1 = (AnyShape $ Sphere (Vector 0 2 15) 3, red)
-  let sphere2 = (AnyShape $ Sphere (Vector 3 2 5) 2.5, blue)
-  let plane = (AnyShape $ Plane yNormal (-1), green)
-  let triangle = (AnyShape $ Triangle (Vector (-1) 2 10) (Vector (-1) (-1) 1) (Vector 0 (-1) 1), white)
+  let sphere1 = (AnyShape $ Sphere (Vector 0 2 15) 3, AnyMaterial $ Diffuse red)
+  let sphere2 = (AnyShape $ Sphere (Vector 3 2 5) 2.5, AnyMaterial $ Diffuse blue)
+  let plane = (AnyShape $ Plane yNormal (-1), AnyMaterial $ Diffuse green)
+  let triangle = (AnyShape $ Triangle (Vector (-1) 2 10) (Vector (-1) (-1) 1) (Vector 0 (-1) 1), AnyMaterial $ Diffuse white)
   let camera = cameraLookAt (Vector 0 0 (-10)) zNormal
   let scene = Scene camera [sphere1, sphere2, plane, triangle] black
   let colors = trace scene w h
