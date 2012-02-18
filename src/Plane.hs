@@ -6,15 +6,15 @@ import Data.Function (on)
 
 import Vector(Vector(..), subtract, dot, cross, normalize)
 import Ray(Ray(..), vector)
-import Shape(Shape(..))
+import Shape(Hit(..), Shape(..))
 
-data Plane = Plane { planeNormal :: Vector, distance :: Float }
+data Plane = Plane { planeNormal :: Vector, planeDistance :: Float }
 
 instance Shape Plane where
-  intersections (Plane normal distance) ray@(Ray origin direction)
-    | vD == 0 = []
+  intersection (Plane normal distance) ray@(Ray origin direction)
+    | vD == 0 = Nothing
     | otherwise = let t = (distance - (dot normal origin)) / vD in
-        if t < 0 then [] else [vector ray t]
+        if t < 0 then Nothing else Just $ Hit t $ vector ray t
     where vD = dot normal direction
   
   normal (Plane normal _) _ = normal

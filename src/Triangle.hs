@@ -1,18 +1,19 @@
 module Triangle(Triangle(..)) where
 
 import Prelude hiding (subtract)
+import Data.Maybe (maybe)
 
 import Vector (Vector(..), subtract, dot, cross, normalize)
 import Ray (Ray(..))
-import Shape (Shape(..))
+import Shape (Hit(..), Shape(..))
 import Plane (Plane(..), fromPoints)
 
 data Triangle = Triangle { vertexA :: Vector, vertexB :: Vector, vertexC :: Vector }
 
 instance Shape Triangle where
-  intersections (Triangle a b c) ray@(Ray origin direction) = filter inTriangle hits
+  intersection (Triangle a b c) ray@(Ray origin direction) =
+    maybe Nothing (\hit@(Hit _ position) -> if inTriangle position then Just hit else Nothing) $ intersection plane ray
     where plane = fromPoints a b c
-          hits = intersections plane ray
           inTriangle p = (u >= 0) && (v >= 0) && (u + v < 1)
             where v0 = subtract c a
                   v1 = subtract b a
