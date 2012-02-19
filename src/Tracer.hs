@@ -39,8 +39,8 @@ traceSingle :: Ray -> [(AnyShape, AnyMaterial)] -> [Light] -> Maybe RGB
 traceSingle ray shapes lights = result hit
   where hit = rayHit ray shapes
         result Nothing = Nothing
-        result (Just h@(v, s, m)) = Just $ (\(RGB r g b) -> RGB (truncate (fromIntegral r * shaded)) (truncate (fromIntegral g * shaded)) (truncate (fromIntegral b * shaded))) $ color m (0, 0) -- $ mapping s v
-          where shaded = min 1 $ foldl (\acc l -> acc + shadow ray h l shapes) 0 lights
+        result (Just h@(v, s, m)) = Just $ (\(RGB r g b) -> RGB (truncate (fromIntegral r * shadedR)) (truncate (fromIntegral g * shadedG)) (truncate (fromIntegral b * shadedB))) $ color m (0, 0) -- $ mapping s v
+          where (shadedR, shadedG, shadedB) = foldl (\(r, g, b) l -> let (sr, sg, sb) = shadow ray h l shapes in (min 1 $ r + sr, min 1 $ g + sg, min 1 $ b + sb)) (0, 0, 0) lights
 
 rayHit :: Ray -> [(AnyShape, AnyMaterial)] -> Maybe (Vector, AnyShape, AnyMaterial)
 rayHit ray shapes = listToMaybe $ map (\(_, p, s, m) -> (p, s, m)) $ sortBy (compare `on` (\(d, _, _, _) -> d)) $ maybeZip (\(s, m) (Hit d p) -> (d, p, s, m)) shapes [intersection shape ray | (shape, _) <- shapes]
@@ -48,8 +48,9 @@ rayHit ray shapes = listToMaybe $ map (\(_, p, s, m) -> (p, s, m)) $ sortBy (com
 --hit :: Ray -> (AnyShape, AnyMaterial) -> [Light]
 --traceRay 
 
-shadow :: Ray -> (Vector, AnyShape, AnyMaterial) -> Light -> [(AnyShape, AnyMaterial)] -> Float -- (Float, Float, Float)
-shadow ray (v, s, _) (PointLight l _ _) _ = max 0 $ dot (normal s v) (normalize $ subtract l v)
+shadow :: Ray -> (Vector, AnyShape, AnyMaterial) -> Light -> [(AnyShape, AnyMaterial)] -> (Float, Float, Float)
+shadow ray (v, s, _) (PointLight l _ (RGB r g b)) _ = (fromIntegral r * n / 255, fromIntegral g * n / 255, fromIntegral b * n / 255)
+  where n = max 0 $ dot (normal s v) (normalize $ subtract l v)
 
 --for each ray
 --  for each shape
