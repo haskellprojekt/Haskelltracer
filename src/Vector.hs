@@ -1,10 +1,10 @@
 module Vector(Vector(..), zeroVector, xNormal, yNormal, zNormal,
               add, negate, subtract, multiply, dot, cross,
-              length2, length, distance2, distance, normalize) where
+              length2, length, distance2, distance, normalize, equal) where
 
 import Prelude hiding (negate, subtract, length)
 
-data Vector = Vector { x :: Float, y :: Float, z :: Float }
+data Vector = Vector { x :: Float, y :: Float, z :: Float } deriving (Show)
 
 zeroVector :: Vector
 zeroVector = Vector 0 0 0
@@ -50,3 +50,6 @@ distance v1 v2 = sqrt (distance2 v1 v2)
 
 normalize :: Vector -> Vector
 normalize v = multiply v (1 / length v)
+
+equal :: Vector -> Vector -> Bool
+equal v1 v2 = distance2 v1 v2 < 1e-5
